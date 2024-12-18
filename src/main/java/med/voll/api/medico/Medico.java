@@ -29,6 +29,7 @@ public class Medico {
     @Embedded
     private Endereco endereco;
 
+
     public Medico(DadosCadastroMedico dados) {
         this.nome = dados.nome();
         this.email = dados.email();
@@ -37,4 +38,5 @@ public class Medico {
         this.especialidade = dados.especialidade();
         this.endereco = new Endereco(dados.endereco());
     }
+
 }
