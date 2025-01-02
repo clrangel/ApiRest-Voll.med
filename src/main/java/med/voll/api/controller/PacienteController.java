@@ -35,5 +35,11 @@ public class PacienteController {
         paciente.atualizarInformacoes(dados);
    }
 
+    // Exclusão básica: Exclui o paciente do banco de dados.
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id){
+        repository.deleteById(id);
+    }
 }
