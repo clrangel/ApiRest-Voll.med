@@ -20,7 +20,7 @@ public class AgendaDeConsultasService {
     private PacienteRepository pacienteRepository;
 
 
-    public void agendar(DadosAgendamentoContulta dados){
+    public void agendar(DadosAgendamentoConsulta dados){
         if (!pacienteRepository.existsById(dados.idPaciente())){
             throw new ValidacaoException("Id do paciente informado não existe!");
         }
@@ -29,14 +29,22 @@ public class AgendaDeConsultasService {
             throw new ValidacaoException("Id do médico informado não existe!");
         }
 
-        var paciente = pacienteRepository.findById(dados.idPaciente()).get();
+        var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
         var medico = escolherMedico(dados);
         var consulta = new Consulta(null, medico, paciente, dados.data());
         consultaRepository.save(consulta);
     }
 
-    private Medico escolherMedico(DadosAgendamentoContulta dados) {
-        
+    private Medico escolherMedico(DadosAgendamentoConsulta dados) {
+        if (dados.idMedico() != null) {
+            return medicoRepository.getReferenceById(dados.idMedico());
+        }
+
+        if (dados.especialidade() == null) {
+            throw new ValidacaoException("Especialidade é obrigatória quando médico não for escolhido!");
+        }
+
+        return medicoRepository.escolherMedicoAleatorioLivreNaData(dados.especialidade(), dados.data());
     }
 
 }
