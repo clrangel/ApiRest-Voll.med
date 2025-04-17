@@ -32,6 +32,8 @@ public class Medico {
 
     private Boolean ativo;
 
+    public Medico() {
+    }
 
     public Medico(DadosCadastroMedico dados) {
         this.nome = dados.nome();
